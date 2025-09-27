@@ -1,16 +1,44 @@
-# rituals_app
+# 🌱 Personalized Daily Rituals App
 
-A new Flutter project.
+> A mobile application that helps users build and track daily rituals with the support of AI-powered chat.  
+> Developed with **Flutter** (frontend), **Supabase** (backend), and **Ollama** (AI on Mac mini).
 
-## Getting Started
+---
 
-This project is a starting point for a Flutter application.
+## 🚀 Project Overview
+The app allows users to:
+- Create and manage daily rituals (morning/evening routines, habits, etc.)
+- Interact with a chatbot (powered by Ollama) to add/edit rituals in natural language
+- Get realtime updates via Supabase
+- Receive notifications when it’s time for a ritual
+- Track progress with streaks and statistics
 
-A few resources to get you started if this is your first Flutter project:
+---
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## 🛠 Tech Stack
+- **Frontend:** Flutter, Riverpod, fl_chart, FCM notifications
+- **Backend:** Supabase (Auth, Postgres DB, Realtime, Edge Functions)
+- **AI:** Ollama (Mac mini server, Mistral 7B / Llama 3 8B)
+- **Collaboration:** GitHub Projects, Issues, Labels, Milestones
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+---
+
+## 📱 Core Features
+- 🔑 User authentication (Supabase Auth)  
+- 💬 AI chatbot for ritual management (Ollama → JSON intents)  
+- 📋 Ritual CRUD (create, edit, delete, reorder steps)  
+- ✅ Checklist view for running a ritual step by step  
+- 🔔 Push notifications (reminders via Supabase Edge Functions)  
+- 📊 Statistics & streak tracking (weekly/monthly charts)  
+- 🎨 Polished UI (dark mode, animations, onboarding flow)  
+
+---
+
+## 👥 Team
+- **Nuri** – AI & Chatbot (Ollama, intent design, integration)  
+- **Funda** – Backend (Supabase setup, DB, Auth, Functions)  
+- **Azra** – Frontend (Flutter UI, state management, notifications)  
+
+---
+
+## 📂 Project Structure
