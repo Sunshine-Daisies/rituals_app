@@ -18,7 +18,7 @@ The app allows users to:
 ## 🛠 Tech Stack
 - **Frontend:** Flutter, Riverpod, fl_chart, FCM notifications
 - **Backend:** Supabase (Auth, Postgres DB, Realtime, Edge Functions)
-- **AI:** Ollama (Mac mini server, Mistral 7B / Llama 3 8B)
+- **AI:** Ollama (Mac mini server, Gemma3 12b)
 - **Collaboration:** GitHub Projects, Issues, Labels, Milestones
 
 ---
