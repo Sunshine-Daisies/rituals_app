@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'routes/app_router.dart';
-// import 'services/supabase_service.dart'; // Temporarily commented until Supabase setup
+import 'services/supabase_service.dart'; // Make sure this returns SupabaseClient
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
-  // Initialize Supabase - commented out for now until we set up the credentials
-  // TODO: Uncomment after Supabase setup
-  // await SupabaseService.initialize(
-  //   url: 'YOUR_SUPABASE_URL',
-  //   anonKey: 'YOUR_SUPABASE_ANON_KEY',
-  // );
+
+  await SupabaseService.initialize(
+    url: 'https://cmctelapcctnhfgfpuqk.supabase.co',
+    anonKey: 'sb_publishable_m7V9FsYEvptSb_HN7ce7QQ_6GKPgEYs',
+  );
 
   runApp(const ProviderScope(child: RitualsApp()));
 }
@@ -21,25 +18,32 @@ class RitualsApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final router = ref.watch(routerProvider);
-    
-    return MaterialApp.router(
-      title: 'Personalized Daily Rituals',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.deepPurple,
-          brightness: Brightness.light,
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('Supabase Test')),
+        body: Center(
+          child: ElevatedButton(
+            onPressed: () async {
+              try {
+                final data = await SupabaseService.instance.client
+                    .from('users')
+                    .select()
+                    .limit(1)
+                    .maybeSingle();
+
+                if (data == null) {
+                  print('No data found or Supabase connection failed.');
+                } else {
+                  print('Supabase connection success! Data: $data');
+                }
+              } catch (e) {
+                print('Error connecting to Supabase: $e');
+              }
+            },
+            child: const Text('Test Supabase Connection'),
+          ),
         ),
-        useMaterial3: true,
       ),
-      darkTheme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.deepPurple,
-          brightness: Brightness.dark,
-        ),
-        useMaterial3: true,
-      ),
-      routerConfig: router,
     );
   }
 }
