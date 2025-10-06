@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -8,23 +7,30 @@ import '../features/chat/chat_screen.dart';
 import '../features/ritual_detail/ritual_detail_screen.dart';
 import '../features/checklist/checklist_screen.dart';
 import '../features/stats/stats_screen.dart';
-// import '../services/supabase_service.dart'; // Temporarily commented until Supabase setup
+import '../pages/chat_page.dart';
+import '../services/supabase_service.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   return GoRouter(
-    initialLocation: '/home', // Start with home for now
+    initialLocation: '/auth', // Start with auth page
     redirect: (context, state) {
-      // Temporarily disable auth redirect until Supabase is set up
-      // TODO: Uncomment after Supabase setup
-      // final isAuthenticated = SupabaseService.instance.currentUser != null;
-      // final isAuthRoute = state.matchedLocation == '/auth';
+      try {
+        final isAuthenticated = SupabaseService.instance.currentUser != null;
+        final isAuthRoute = state.matchedLocation == '/auth';
 
-      // if (!isAuthenticated && !isAuthRoute) {
-      //   return '/auth';
-      // }
-      // if (isAuthenticated && isAuthRoute) {
-      //   return '/home';
-      // }
+        if (!isAuthenticated && !isAuthRoute) {
+          return '/auth';
+        }
+        if (isAuthenticated && isAuthRoute) {
+          return '/home';
+        }
+      } catch (e) {
+        // Supabase henüz başlatılmamışsa auth sayfasına yönlendir
+        print('Auth check failed: $e');
+        if (state.matchedLocation != '/auth') {
+          return '/auth';
+        }
+      }
       return null;
     },
     routes: [
@@ -39,6 +45,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: '/chat',
         builder: (context, state) => const ChatScreen(),
+      ),
+      GoRoute(
+        path: '/llm-chat',
+        builder: (context, state) => const ChatPage(),
       ),
       GoRoute(
         path: '/ritual/:id',

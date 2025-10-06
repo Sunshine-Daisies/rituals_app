@@ -1,4 +1,5 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class SupabaseService {
   static SupabaseService? _instance;
@@ -9,10 +10,17 @@ class SupabaseService {
   SupabaseClient get client => Supabase.instance.client;
   User? get currentUser => client.auth.currentUser;
   
-  static Future<void> initialize({
-    required String url,
-    required String anonKey,
-  }) async {
+  static Future<void> initialize() async {
+    final url = dotenv.env['SUPABASE_URL'];
+    final anonKey = dotenv.env['SUPABASE_ANON_KEY'];
+    
+    if (url == null || url.isEmpty) {
+      throw Exception('SUPABASE_URL not found in .env file');
+    }
+    if (anonKey == null || anonKey.isEmpty) {
+      throw Exception('SUPABASE_ANON_KEY not found in .env file');
+    }
+    
     await Supabase.initialize(
       url: url,
       anonKey: anonKey,

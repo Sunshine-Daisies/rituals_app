@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'routes/app_router.dart';
-// import 'services/supabase_service.dart'; // Temporarily commented until Supabase setup
+import 'services/supabase_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
-  // Initialize Supabase - commented out for now until we set up the credentials
-  // TODO: Uncomment after Supabase setup
-  // await SupabaseService.initialize(
-  //   url: 'YOUR_SUPABASE_URL',
-  //   anonKey: 'YOUR_SUPABASE_ANON_KEY',
-  // );
+  // Load environment variables
+  await dotenv.load(fileName: ".env");
+  
+  // Initialize Supabase
+  try {
+    await SupabaseService.initialize();
+    print('Supabase initialized successfully');
+  } catch (e) {
+    print('Supabase initialization failed: $e');
+    // Uygulama çalışmaya devam etsin ama auth işlemleri çalışmayabilir
+  }
 
   runApp(const ProviderScope(child: RitualsApp()));
 }
