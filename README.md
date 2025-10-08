@@ -132,6 +132,7 @@ lib/
 │   └── app_router.dart       # Go Router configuration
 ├── services/
 │   ├── llm_service.dart      # OpenAI API integration
+│   └── llm_security_service.dart # Llm security
 │   └── supabase_service.dart # Supabase client
 ├── features/
 │   ├── auth/                 # Authentication screens
