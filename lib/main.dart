@@ -7,8 +7,14 @@ import 'services/supabase_service.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
-  // Load environment variables
-  await dotenv.load(fileName: ".env");
+  // Load environment variables from .env file
+  try {
+    await dotenv.load(fileName: ".env");
+    print('Environment variables loaded successfully');
+  } catch (e) {
+    print('Failed to load .env file: $e');
+    // Uygulama çalışmaya devam etsin ama env değişkenleri olmayabilir
+  }
   
   // Initialize Supabase
   try {
