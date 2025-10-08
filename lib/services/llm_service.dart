@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:dart_openai/dart_openai.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'llm_security_service.dart';
 
 class LlmService {
   // Modeller
@@ -15,12 +16,22 @@ class LlmService {
     OpenAI.apiKey = apiKey;
   }
 
-  /// Serbest sohbet (gerekiyorsa)
+  /// Serbest sohbet (sadece ritüel yönetimi için)
   static Future<String> getChatResponse(String userPrompt) async {
     initialize();
+    
+    // Tüm güvenlik kontrolleri (rate limit, validation, audit log)
+    LlmSecurityService.performSecurityChecks(userPrompt, 'chat');
+    
     final r = await OpenAI.instance.chat.create(
       model: _chatModel,
       messages: [
+        OpenAIChatCompletionChoiceMessageModel(
+          role: OpenAIChatMessageRole.system,
+          content: [OpenAIChatCompletionChoiceMessageContentItemModel.text(
+            LlmSecurityService.getChatSystemPrompt(),
+          )],
+        ),
         OpenAIChatCompletionChoiceMessageModel(
           role: OpenAIChatMessageRole.user,
           content: [OpenAIChatCompletionChoiceMessageContentItemModel.text(userPrompt)],
@@ -37,17 +48,8 @@ class LlmService {
   static Future<RitualIntent> inferRitualIntent(String userPrompt) async {
     initialize();
 
-    final system = '''
-Kullanıcının ritüel yönetimi isteğini YALNIZCA JSON olarak döndür.
-Şema:
-- intent: create_ritual | edit_ritual | delete_ritual | reorder_steps | log_completion | set_reminder | show_stats | small_talk
-- ritual_name: string|null
-- steps: string[]|null (max 20)
-- reminder: { time: "HH:mm" | ISO saat, days: ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"] }|null
-Kural:
-- Serbest metin yok.
-- Emin değilsen makul tahmin yap; eksikleri null bırakma, gerekirse reminder.days = tüm günler.
-''';
+    // Tüm güvenlik kontrolleri (rate limit, validation, audit log)
+    LlmSecurityService.performSecurityChecks(userPrompt, 'ritual_intent');
 
     final r = await OpenAI.instance.chat.create(
       model: _intentModel,
@@ -56,7 +58,9 @@ Kural:
       messages: [
         OpenAIChatCompletionChoiceMessageModel(
           role: OpenAIChatMessageRole.system,
-          content: [OpenAIChatCompletionChoiceMessageContentItemModel.text(system)],
+          content: [OpenAIChatCompletionChoiceMessageContentItemModel.text(
+            LlmSecurityService.getRitualIntentSystemPrompt(),
+          )],
         ),
         OpenAIChatCompletionChoiceMessageModel(
           role: OpenAIChatMessageRole.user,
