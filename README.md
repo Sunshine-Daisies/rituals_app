@@ -1,9 +1,6 @@
 # 🌱 Personalized Daily Rituals App# 🌱 Personalized Daily Rituals App
 
 
-
-> A mobile & web application that helps users build and track daily rituals with the support of AI-powered chat.  > A mobile application that helps users build and track daily rituals with the support of AI-powered chat.  
-
 > Developed with **Flutter** (frontend), **Supabase** (backend), and **OpenAI API** for chatbot functionality.> Developed with **Flutter** (frontend), **Supabase** (backend), and **OpenAI API** for chatbot functionality.
 
 
